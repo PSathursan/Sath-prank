@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Série de Blagues Explosives !</title>
+    
+    <style>
+        /* CSS pour le style */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Police fun */
+            background-color: #f0f0f0;
+        }
+
+        #bouton-blague {
+            padding: 25px 50px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #FF4500; /* Rouge Vif */
+            color: white;
+            border: 8px solid #000; /* Bordure épaisse */
+            border-radius: 15px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #bouton-blague:hover {
+            background-color: #FF6347;
+            transform: scale(1.05); /* Petit effet de zoom au survol */
+        }
+        
+        #bouton-blague:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #image-blague {
+            margin-top: 30px;
+            max-width: 20%;
+            height: auto;
+            border: 5px solid #333;
+            border-radius: 15px;
+            display: none; /* Cache l'image au démarrage */
+        }
+    </style>
+</head>
+<body>
+
+    <img id="image-blague" src="" alt="Image de blague">
+    <audio id="son-blague"></audio>
+
+    <button id="bouton-blague"></button>
+
+    <script>
+        // --- 1. CONFIGURATION DES BLAGUES ---
+        // ATTENTION : Changez les noms de fichiers ci-dessous pour les vôtres !
+        const blagues = [
+            { image: 'Angel.jpg', son: 'rire.mp3' },
+            { image: 'David.jpg', son: 'rire.mp3' },
+            { image: 'Gaj.jpg', son: 'cri.mp3' },
+            // Ajoutez d'autres paires image/son ici, si nécessaire
+        ];
+
+        // --- 2. VARIABLES D'ÉTAT & ÉLÉMENTS HTML ---
+        let indexActuel = 0;
+        const nombreTotalBlagues = blagues.length;
+
+        const bouton = document.getElementById('bouton-blague');
+        const image = document.getElementById('image-blague');
+        const son = document.getElementById('son-blague');
+        
+        // --- 3. LA FONCTION PRINCIPALE DE DÉCLENCHEMENT ---
+        function declencherBlague() {
+            if (indexActuel < nombreTotalBlagues) {
+                const blague = blagues[indexActuel];
+
+                // a. Mettre à jour la source de l'image et de l'audio
+                image.src = blague.image;
+                son.src = blague.son;
+
+                // b. Afficher l'image
+                image.style.display = 'block';
+
+                // c. Jouer le son
+                // On s'assure de réinitialiser le son avant de jouer pour éviter les bugs
+                son.pause(); 
+                son.currentTime = 0; 
+                son.play();
+
+                // d. Préparer pour le prochain clic
+                indexActuel++;
+                
+                // e. Mettre à jour le texte du bouton
+                if (indexActuel < nombreTotalBlagues) {
+                    // Si ce n'est pas la dernière blague
+                    bouton.textContent = "CLIQUUEEEZZ DE NOUVEEEAUU ICIII";
+                } else {
+                    // Si c'était la dernière blague
+                    bouton.textContent = "FIN 😂 !";
+                    bouton.disabled = true; // Désactive le bouton
+                }
+            }
+        }
+
+        // --- 4. INITIALISATION ---
+
+        // Texte initial du bouton
+        bouton.textContent = "CLIIQUEZZZZ ICIII";
+
+        // Événement : Au clic, on lance la fonction
+        bouton.addEventListener('click', declencherBlague);
+    </script>
+
+</body>
+</html>
